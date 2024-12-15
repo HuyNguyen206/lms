@@ -28,7 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return $this->redirectPostLogin();
     }
 
     /**
@@ -43,5 +43,10 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    protected function redirectPostLogin()
+    {
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 }
