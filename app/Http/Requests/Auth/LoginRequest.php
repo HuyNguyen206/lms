@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\Trait\CheckGuard;
+use App\Util\Helper;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
@@ -12,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
+    use CheckGuard;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -41,8 +44,7 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
-        if (! Auth::guard($this->getGuard())->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        if (! Auth::guard(Helper::getGuard(\request()))->attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -82,10 +84,5 @@ class LoginRequest extends FormRequest
     public function throttleKey(): string
     {
         return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
-    }
-
-    private function getGuard(): string
-    {
-        return \request()->routeIs('admin.login') ? 'admin' : 'web';
     }
 }

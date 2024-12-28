@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware('auth:admin');
+})->middleware('auth-lms:admin');
 
 Route::name('admin.')->group(function () {
-    Route::middleware('guest')->group(function () {
+    Route::middleware('guest-lms')->group(function () {
         Route::get('register', [RegisteredUserController::class, 'create'])
             ->name('register');
 
@@ -25,7 +25,7 @@ Route::name('admin.')->group(function () {
         Route::get('login', [AuthenticatedSessionController::class, 'create'])
             ->name('login');
 
-        Route::post('login', [AuthenticatedSessionController::class, 'store']);
+        Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 
         Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
             ->name('password.request');
@@ -40,7 +40,7 @@ Route::name('admin.')->group(function () {
             ->name('password.store');
     });
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware('auth-lms:admin')->group(function () {
         Route::get('verify-email', EmailVerificationPromptController::class)
             ->name('verification.notice');
 

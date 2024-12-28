@@ -17,7 +17,11 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'auth-lms' => \App\Http\Middleware\Authenticate::class,
+            'guest-lms' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'check-role' => \App\Http\Middleware\CheckRoleRegularUser::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
