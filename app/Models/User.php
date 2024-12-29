@@ -7,6 +7,7 @@ use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -46,5 +47,19 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => Role::class
         ];
+    }
+
+    public function isInstructor(): bool
+    {
+        return $this->role === Role::INSTRUCTOR;
+    }
+
+    public function getRoleName(): string
+    {
+        if ($this instanceof Admin) {
+            return 'admin';
+        }
+
+       return Str::lower($this->role->name);
     }
 }

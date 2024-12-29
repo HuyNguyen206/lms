@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class UserController extends Controller
+class StudentController extends Controller
 {
     public function index(): View
     {
-        return \view('dashboard');
+        return \view('student.dashboard');
     }
 }

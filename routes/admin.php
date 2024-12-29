@@ -16,7 +16,7 @@ Route::get('/', function () {
 })->middleware('auth-lms:admin');
 
 Route::name('admin.')->group(function () {
-    Route::middleware('guest-lms')->group(function () {
+    Route::middleware('guest-lms:admin')->group(function () {
         Route::get('register', [RegisteredUserController::class, 'create'])
             ->name('register');
 
@@ -41,6 +41,10 @@ Route::name('admin.')->group(function () {
     });
 
     Route::middleware('auth-lms:admin')->group(function () {
+        Route::get('dashboard', [\App\Http\Controllers\Admin\AdminController::class, 'index'])
+            ->middleware(['auth-lms:admin', 'verified'])
+            ->name('dashboard');
+
         Route::get('verify-email', EmailVerificationPromptController::class)
             ->name('verification.notice');
 

@@ -49,6 +49,6 @@ class AuthenticatedSessionController extends Controller
 
     protected function redirectPostLogin()
     {
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route_user('dashboard', absolute: false));
     }
 }
