@@ -33,6 +33,7 @@
 </head>
 <body  class=" d-flex flex-column">
 <script src="{{asset('admin/assets/dist/js/demo-theme.min.js?1692870487')}}"></script>
+@vite(['resources/js/login.js'])
 <div class="page page-center">
     <div class="container container-tight py-4">
         <x-auth-session-status class="mb-4" :status="session('status')" />
