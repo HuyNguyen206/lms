@@ -17,11 +17,6 @@ Route::get('/', function () {
 
 Route::name('admin.')->group(function () {
     Route::middleware('guest-lms:admin')->group(function () {
-        Route::get('register', [RegisteredUserController::class, 'create'])
-            ->name('register');
-
-        Route::post('register', [RegisteredUserController::class, 'store']);
-
         Route::get('login', [AuthenticatedSessionController::class, 'create'])
             ->name('login');
 
