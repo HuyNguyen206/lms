@@ -217,26 +217,39 @@
                 <img src="images/search_icon.png" alt="Search" class="img-fluid">
             </div>
             <ul>
-                <li>
-                    <a class="menu_signin" href="#">
+                @auth
+                    <li>
+                        <a class="menu_signin" href="#">
                             <span>
                                 <img src="images/cart_icon_black.png" alt="user" class="img-fluid">
                             </span>
-                        <b>06</b>
-                    </a>
-                </li>
-                <li>
-                    <a class="admin" href="#">
+                            <b>06</b>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="admin" href="#">
                             <span>
-                                <img src="images/user_icon_black.png" alt="user" class="img-fluid">
+                                <img src="{{asset('assets/images/user_icon_black.png')}}" alt="user" class="img-fluid">
                             </span>
-                        admin
-                    </a>
-                </li>
-                <li>
-                    <a class="common_btn" href="{{route_user('login')}}">Sign In</a>
-                    <a class="common_btn" href="#">Sign Up</a>
-                </li>
+                            {{auth()->user()->email}}
+                        </a>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <x-responsive-nav-link class="dropdown-item" :href="route('admin.logout')"
+                                                   onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                {{ __('Log Out') }}
+                            </x-responsive-nav-link>
+                        </form>
+                    </li>
+                @else
+                    <li>
+                        <a class="common_btn" href="{{route('login')}}">Sign In</a>
+                        <a class="common_btn" href="{{route('register')}}">Sign Up</a>
+                    </li>
+                @endauth
             </ul>
         </div>
 

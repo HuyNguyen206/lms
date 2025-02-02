@@ -49,6 +49,8 @@ class AuthenticatedSessionController extends Controller
 
     protected function redirectPostLogin()
     {
-        return redirect()->intended(route_user('dashboard', absolute: false));
+        $role = \request()->user()->getRoleName();
+
+        return redirect()->intended(route_user("$role.dashboard", absolute: false));
     }
 }
