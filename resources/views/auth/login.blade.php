@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-    <title>EduCore - Online Courses & Education HTML Template</title>
-    @include('frontend.partials.css')
-</head>
-
-<body class="home_3">
-
-
-<!--============ PRELOADER START ===========-->
-<div id="preloader">
-    <div class="preloader_icon">
-        <img src="{{asset('assets/images/preloader.png')}}" alt="Preloader" class="img-fluid">
-    </div>
-</div>
-<!--============ PRELOADER START ===========-->
-
+@extends('frontend.layouts.app')
+@section('content')
 
 <!--===========================
     SIGN IN START
@@ -52,7 +32,7 @@
                                 </div>
                                 <div class="col-xl-12">
                                     <div class="wsus__login_form_input">
-                                        <label>Password* <a href="#">Forgot Password?</a></label>
+                                        <label>Password* <a href="{{route('password.request')}}">Forgot Password?</a></label>
                                         <input type="password" placeholder="Password" name="password">
                                         <x-input-error :messages="$errors->get('password')" class="mt-2" style="color: red"/>
                                     </div>
@@ -80,7 +60,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <p class="create_account">Don't have an account? <a href="sign_up.html">Create free
+                        <p class="create_account">Don't have an account? <a href="{{route('register')}}">Create free
                                 account</a></p>
                     </div>
             </div>
@@ -92,23 +72,4 @@
     SIGN IN END
 ============================-->
 
-
-<!--================================
-    SCROLL BUTTON START
-=================================-->
-<div class="progress-wrap">
-    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
-        <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
-    </svg>
-</div>
-<!--================================
-    SCROLL BUTTON END
-=================================-->
-
-
-@include('frontend.partials.js')
-
-
-</body>
-
-</html>
+@endsection
