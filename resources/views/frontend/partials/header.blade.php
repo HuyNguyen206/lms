@@ -234,7 +234,8 @@
                             {{auth()->user()->email}}
                         </a>
                     </li>
-                    <li>
+                    <li style="display: flex; justify-items: center; align-items: center">
+                        <img src="{{asset('assets/images/dash_icon_16.png')}}" alt="icon" style="width: 20px !important;">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-responsive-nav-link class="dropdown-item" :href="route('admin.logout')"
