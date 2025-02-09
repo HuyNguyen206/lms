@@ -14,10 +14,22 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('headline')->nullable();
+            $table->text('bio')->nullable();
+            $table->string('document')->nullable();
+            $table->boolean('gender')->default(\App\Enums\Gender::MALE->value);
             $table->integer('role')->comment('1: Student, 2: Instructor')->default(\App\Enums\Role::STUDENT->value);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('image')->default('assets/images/avatar.jpg');
+            $table->string('facebook')->nullable();
+            $table->string('x')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('website')->nullable();
+            $table->string('github')->nullable();
+            $table->integer('login_as')->comment('1: Student, 2: Instructor')->default(\App\Enums\Role::STUDENT->value);
+            $table->integer('approve_instructor_status')->default(null);
             $table->rememberToken();
             $table->timestamps();
         });

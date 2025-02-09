@@ -9,7 +9,6 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        dd(session()->all());
         return view('frontend.pages.home.index');
     }
 }
