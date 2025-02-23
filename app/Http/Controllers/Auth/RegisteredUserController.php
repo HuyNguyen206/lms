@@ -6,6 +6,7 @@ use App\Enums\ApproveStatus;
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Traits\FileUpload;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
+    use FileUpload;
     /**
      * Display the registration view.
      */
@@ -41,7 +43,7 @@ class RegisteredUserController extends Controller
 
         $isInstructor = (int) $request->type === Role::INSTRUCTOR->value;
         if ($isInstructor) {
-            $baseRule['document'] = ['required'];
+            $baseRule['document'] = ['required', 'mimes:pdf,doc,docx,jpg,png', 'max:30000'];
         }
 
         $request->validate($baseRule);
@@ -56,6 +58,12 @@ class RegisteredUserController extends Controller
             'role' => $request->type,
             'approve_instructor_status' => $isInstructor ? ApproveStatus::PENDING->value : null
         ]);
+
+        if ($isInstructor) {
+           $filePath = $this->upload($request->file('document'), $user->id);
+           $user->document = $filePath;
+           $user->save();
+        }
 
         event(new Registered($user));
 

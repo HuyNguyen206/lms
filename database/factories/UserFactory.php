@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ApproveStatus;
 use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -29,6 +30,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'role' => Role::STUDENT->value,
+            'approve_instructor_status' => ApproveStatus::PENDING->value,
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

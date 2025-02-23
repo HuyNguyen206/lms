@@ -144,6 +144,10 @@
                     </div>
                 </div>
                 <div class="col-xl-9 col-md-8">
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        Hi {{auth()->user()->name }}, your instructor request is currently pending. We will send you email once it was approved
+                    </div>
+
                     <div class="row">
                         <div class="col-xl-4 col-sm-6 wow fadeInUp">
                             <div class="wsus__dash_earning">

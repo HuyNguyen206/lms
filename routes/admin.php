@@ -60,6 +60,8 @@ Route::name('admin.')->group(function () {
 
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
+
+        Route::get('instructor-requests', [\App\Http\Controllers\Admin\AdminController::class, 'instructorRequests'])->name('instructor.requests');
     });
 });
 

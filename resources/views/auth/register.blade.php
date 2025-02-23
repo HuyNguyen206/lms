@@ -3,7 +3,7 @@
     <!--===========================
         SIGN UP START
     ============================-->
-    <section class="wsus__sign_in sign_up">
+    <section class="wsus__sign_in sign_up" style="overflow: auto !important;">
         <div class="row align-items-center">
             <div class="col-xxl-5 col-xl-6 col-lg-6 wow fadeInLeft">
                 <div class="wsus__sign_img">
@@ -14,8 +14,7 @@
                 </div>
             </div>
             <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-9 m-auto wow fadeInRight">
-                <div class="wsus__sign_form_area">
-                    aria-labelledby="pills-home-tab" tabindex="0">
+                <div class="wsus__sign_form_area" style="padding-top: 130px">
                     <form action="{{route('register')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <h2>Sign Up<span>!</span></h2>
@@ -26,12 +25,11 @@
                                     <label>You are?</label>
                                     <div style="display: flex">
                                         <label class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="type" value="{{\App\Enums\Role::STUDENT->value}}"
-                                                   checked="">
+                                            <input class="form-check-input" type="radio" name="type" @checked(old('type') == \App\Enums\Role::STUDENT->value) value="{{\App\Enums\Role::STUDENT->value}}">
                                             <span class="form-check-label">Student</span>
                                         </label>
                                         <label class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="type" value="{{\App\Enums\Role::INSTRUCTOR->value}}">
+                                            <input class="form-check-input" type="radio" name="type" @checked(old('type') == \App\Enums\Role::INSTRUCTOR->value) value="{{\App\Enums\Role::INSTRUCTOR->value}}">
                                             <span class="form-check-label">Instructor</span>
                                         </label>
                                     </div>

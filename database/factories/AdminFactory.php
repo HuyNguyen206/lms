@@ -16,6 +16,7 @@ class AdminFactory extends UserFactory
     {
         $data = parent::definition();
         unset($data['role']);
+        unset($data['approve_instructor_status']);
 
         return $data;
     }
