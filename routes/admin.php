@@ -62,6 +62,7 @@ Route::name('admin.')->group(function () {
             ->name('logout');
 
         Route::get('instructor-requests', [\App\Http\Controllers\Admin\AdminController::class, 'instructorRequests'])->name('instructor.requests');
+        Route::patch('instructor-requests/{user?}', [\App\Http\Controllers\Admin\AdminController::class, 'updateStatus'])->name('instructor.update-status');
     });
 });
 

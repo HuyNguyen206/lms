@@ -39,7 +39,7 @@
                                             </svg>
                                             {{$instructor->document}}
                                     </td>
-                                        @endif
+                                    @endif
                                     <td class="text-secondary" data-label="Role">
                                         @php
                                             $status = $instructor->approve_instructor_status;
@@ -58,10 +58,12 @@
                                                 Edit
                                             </a>
                                             <div class="dropdown">
-                                                <form action="">
-                                                    <select name="status" class="btn dropdown-toggle align-text-top" style="">
+                                                <form id="status-form" action="">
+                                                    <select data-instructor-id='{{$instructor->id}}' name="status" class="btn dropdown-toggle align-text-top status-instructor"
+                                                            style="">
                                                         @foreach(\App\Enums\ApproveStatus::cases() as $status)
-                                                            <option value="{{$status->value}}" class="dropdown-item" href="#">
+                                                            <option @selected($instructor->approve_instructor_status->value === $status->value) value="{{$status->value}}" class="dropdown-item"
+                                                                    href="#">
                                                                 {{$status->label()}}
                                                             </option>
                                                         @endforeach
@@ -86,5 +88,41 @@
             </div>
         </div>
     @endsection
-    test sssssss
+    @section('js')
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const selectElements = document.querySelectorAll(".status-instructor");
+
+                selectElements.forEach(selectElement => {
+
+                    selectElement.addEventListener("change", function () {
+                        const selectedValue = this.value;
+                        const instructorId = this.getAttribute("data-instructor-id");
+
+                        fetch(`{{route('admin.instructor.update-status')}}/${instructorId}`, {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-Requested-With": "XMLHttpRequest"
+                            },
+                            body: JSON.stringify({status: selectedValue, _token: '{{csrf_token()}}'})
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log("Success:", data);
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                            });
+                    });
+                })
+
+            });
+        </script>
+    @endsection
 </x-admin.app-layout>
