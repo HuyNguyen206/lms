@@ -63,6 +63,7 @@ Route::name('admin.')->group(function () {
 
         Route::get('instructor-requests', [\App\Http\Controllers\Admin\AdminController::class, 'instructorRequests'])->name('instructor.requests');
         Route::patch('instructor-requests/{user?}', [\App\Http\Controllers\Admin\AdminController::class, 'updateStatus'])->name('instructor.update-status');
+        Route::get('instructor-requests/download-document/{user?}', [\App\Http\Controllers\Admin\AdminController::class, 'downloadDocument'])->name('instructor.download-document');
     });
 });
 
