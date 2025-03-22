@@ -11,6 +11,7 @@ Route::get('/', [\App\Http\Controllers\Frontend\FrontendController::class, 'inde
 
 Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::STUDENT->value])->prefix('student')->as('student.')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Frontend\StudentController::class, 'index'])->name('dashboard');
+    Route::get('instructor-registration', [\App\Http\Controllers\Frontend\StudentController::class, 'instructorRegistration'])->name('instructor-registration');
 });
 
 Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::INSTRUCTOR->value])->prefix('instructor')->as('instructor.')->group(function () {

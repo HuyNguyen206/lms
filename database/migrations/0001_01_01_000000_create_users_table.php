@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('github')->nullable();
             $table->integer('login_as')->comment('1: Student, 2: Instructor')->default(\App\Enums\Role::STUDENT->value);
-            $table->integer('approve_instructor_status')->default(null);
+            $table->integer('approve_instructor_status')->default(null)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

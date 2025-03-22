@@ -12,4 +12,9 @@ class StudentController extends Controller
     {
         return \view('student.dashboard');
     }
+
+    public function instructorRegistration()
+    {
+        return \view('student.instructor-request');
+    }
 }
