@@ -39,7 +39,9 @@
                         Become instructor
                     </div>
                         <div class="card-body">
-                            <form action="" enctype="multipart/form-data" method="post">
+                            <form action="{{route('student.instructor-registration.patch')}}" enctype="multipart/form-data" method="post">
+                                    @method('patch')
+                                @csrf
                                     <div class="wsus__login_form_input">
                                         <label class="form-label">Document (Instructor)</label>
                                         <input type="file" class="form-control" name="document">

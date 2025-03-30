@@ -12,6 +12,10 @@ Route::get('/', [\App\Http\Controllers\Frontend\FrontendController::class, 'inde
 Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::STUDENT->value])->prefix('student')->as('student.')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Frontend\StudentController::class, 'index'])->name('dashboard');
     Route::get('instructor-registration', [\App\Http\Controllers\Frontend\StudentController::class, 'instructorRegistration'])->name('instructor-registration');
+    Route::patch('instructor-registration', [\App\Http\Controllers\Frontend\StudentController::class, 'instructorRegistrationPatch'])->name('instructor-registration.patch');
+    Route::get('profile', [\App\Http\Controllers\Frontend\ProfileController::class, 'index'])->name('profile');
+    Route::patch('profile', [\App\Http\Controllers\Frontend\ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('profile/password', [\App\Http\Controllers\Frontend\ProfileController::class, 'updatePassword'])->name('profile.password-update');
 });
 
 Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::INSTRUCTOR->value])->prefix('instructor')->as('instructor.')->group(function () {

@@ -34,13 +34,13 @@ class AdminController extends Controller
             'status' => Rule::enum(ApproveStatus::class)
         ]);
 
-        $user->update([
-            'approve_instructor_status' => $data['status'],
-        ]);
-
         $mail = ApproveStatus::from($data['status']) === ApproveStatus::APPROVED ? new InstructorRequestApprovedMail($user) : new InstructorRequestRejectedMail($user);
         $mailPending = Mail::to($user);
         config('lms-mail.on-queue') ? $mailPending->queue($mail) : $mailPending->send($mail);
+
+        $user->update([
+            'approve_instructor_status' => $data['status'],
+        ]);
 
         return response()->json(['success' => true]);
     }
