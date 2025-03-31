@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-12 wow fadeInUp">
                         <div class="wsus__breadcrumb_text">
-                            <h1>Student</h1>
+                            <h1>Instructor</h1>
                             <ul>
                                 <li><a href="#">Home</a></li>
                                 <li>Overview</li>
@@ -31,7 +31,7 @@
     <section class="wsus__dashboard mt_90 xs_mt_70 pb_120 xs_pb_100">
         <div class="container">
             <div class="row">
-                @include('student.instructor-info')
+                @include('frontend.partials.sidebar')
                 <div class="col-xl-9 col-md-8 wow fadeInRight">
                     <div class="wsus__dashboard_contant">
                         <div class="wsus__dashboard_contant_top d-flex flex-wrap justify-content-between">
@@ -45,7 +45,7 @@
                         </div>
 
 
-                        <form action="{{route('student.profile.update')}}"  enctype="multipart/form-data" method="post" class="wsus__dashboard_profile_update">
+                        <form action="{{route('profile.update', 'instructor')}}"  enctype="multipart/form-data" method="post" class="wsus__dashboard_profile_update">
                             @csrf
                             @method('patch')
                             <div class="row">
@@ -140,7 +140,7 @@
                         </div>
 
 
-                        <form action="{{route('student.profile.password-update')}}" method="post" class="wsus__dashboard_profile_update">
+                        <form action="{{route('profile.password-update', 'instructor')}}" method="post" class="wsus__dashboard_profile_update">
                             @csrf
                             @method('patch')
                             <div class="row">

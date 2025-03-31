@@ -14,7 +14,7 @@ class StudentController extends Controller
 
     public function index(): View
     {
-        return \view('student.dashboard');
+        return \view('frontend.student.dashboard');
     }
 
     public function instructorRegistration()

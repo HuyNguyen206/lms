@@ -13,15 +13,17 @@ class ProfileController extends Controller
 {
     use FileUpload;
 
-    public function index()
+    public function index(string $role)
     {
-        return view('student/profile/index');
+
+        return view("frontend/$role/profile/index");
     }
 
     public function update(Request $request)
     {
+        $user = $request->user();
         $data = $request->validate([
-            'email' => 'sometimes|email|unique:users,email,' . $request->user()->id,
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
             'gender' => ['sometimes', Rule::enum(Gender::class)],
             'headline' => '',
             'facebook' => '',
@@ -31,11 +33,13 @@ class ProfileController extends Controller
         ]);
 
         if (isset($data['image']) && $data['image'] instanceof UploadedFile) {
+            $this->delete($user->image);
             $path = $this->upload($data['image'], disk: 'public');
             $data['image'] = $path;
         }
 
-        $request->user()->update($data);
+        $user->update($data);
+        flash()->option('position', 'bottom-right')->success('Profile update successfully!');
 
         return redirect()->back();
     }
