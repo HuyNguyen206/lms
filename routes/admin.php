@@ -67,6 +67,8 @@ Route::name('admin.')->group(function () {
 
         Route::prefix('courses')->as('courses.')->group(function () {
             Route::resource('languages', \App\Http\Controllers\Admin\Course\LanguageController::class);
+            Route::resource('levels', \App\Http\Controllers\Admin\Course\LevelController::class);
+            Route::resource('categories', \App\Http\Controllers\Admin\Course\CategoryController::class);
         });
     });
 });

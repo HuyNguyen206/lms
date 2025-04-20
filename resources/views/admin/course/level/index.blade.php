@@ -4,9 +4,9 @@
             <div style="padding: 0 15px">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Languages</h3>
+                        <h3 class="card-title">Levels</h3>
                         <div class="card-actions">
-                            <a href="{{route('admin.courses.languages.create')}}" class="btn btn-primary">
+                            <a href="{{route('admin.courses.levels.create')}}" class="btn btn-primary">
                                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
                                 Add new
@@ -22,22 +22,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @forelse($languages as $language)
+                            @forelse($levels as $level)
                                 <tr>
                                     <td data-label="Name">
                                         <div class="d-flex py-1 align-items-center">
                                             <div class="flex-fill">
-                                                <div class="font-weight-medium">{{$language->name}}</div>
+                                                <div class="font-weight-medium">{{$level->name}}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="text-secondary" data-label="Role">
-                                        <a href="{{route('admin.courses.languages.edit', $language->id)}}">Edit</a>
-                                        <form method="POST" action="{{ route('admin.courses.languages.destroy', $language->id) }}">
+                                        <a href="{{route('admin.courses.levels.edit', $level->id)}}">Edit</a>
+                                        <form method="POST" action="{{ route('admin.courses.levels.destroy', $level->id) }}">
                                             @method('delete')
                                             @csrf
 
-                                            <x-responsive-nav-link class="dropdown-item" :href="route('admin.courses.languages.destroy', $language->id)"
+                                            <x-responsive-nav-link class="dropdown-item" :href="route('admin.courses.levels.destroy', $level->id)"
                                                                    onclick="event.preventDefault();
                                                                    if(!confirm('Are you sure?')) return;
                                                 this.closest('form').submit();">
@@ -59,7 +59,7 @@
 
                     </div>
                     <div class="mt-4">
-                        {!! $languages->links()  !!}
+                        {!! $levels->links()  !!}
                     </div>
                 </div>
             </div>
