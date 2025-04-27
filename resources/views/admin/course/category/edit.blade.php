@@ -51,13 +51,27 @@
                                     <x-input-error :messages="$errors->get('parent_id')" class="mt-2"/>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Show at trending</label>
-                                    <input type="checkbox" name="is_show_at_trending" @checked(old('is_show_at_trending', $category->is_show_at_trending)) placeholder="Language name">
+                                    <label class="form-label">Sub category</label>
+                                    <select name="sub_categories[]" multiple>
+                                        <option value="">Select sub category</option>
+                                        @foreach($subCategories as $subCategory)
+                                            <option  @selected(in_array($subCategory->id, old('sub_categories', $category->categories->pluck('id')->toArray()))) value="{{$subCategory->id}}">{{$subCategory->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <x-input-error :messages="$errors->get('parent_id')" class="mt-2"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="is_show_at_trending" @checked(old('is_show_at_trending', $category->is_show_at_trending))>
+                                        <span class="form-check-label">Show at trending</span>
+                                    </label>
                                     <x-input-error :messages="$errors->get('is_show_at_trending')" class="mt-2" style="color: red"/>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Is enable</label>
-                                    <input type="checkbox" name="is_enable" @checked(old('is_enable')) placeholder="Language name">
+                                    <label class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" name="is_enable" @checked(old('is_enable', $category->is_enable)))>
+                                        <span class="form-check-label">Is enable</span>
+                                    </label>
                                     <x-input-error :messages="$errors->get('is_enable')" class="mt-2" style="color: red"/>
                                 </div>
                                 <div class="mb-3">

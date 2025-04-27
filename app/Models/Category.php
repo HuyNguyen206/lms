@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * @mixin Builder
+ * @property Category[] $categories
  */
 class Category extends Model
 {
