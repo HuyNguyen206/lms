@@ -45,6 +45,7 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'unique:categories'],
             'icon' => ['image'],
+            'image' => ['image'],
             'parent_id' => ['nullable', Rule::exists(Category::class, 'id')],
             'sub_categories.*' => [Rule::exists(Category::class, 'id')]
         ]);
@@ -63,9 +64,12 @@ class CategoryController extends Controller
         }
 
         DB::transaction(function () use ($data) {
+            $subCategories = $data['sub_categories'] ?? null;
+            unset($data['sub_categories']);
+
             $category = Category::create($data);
 
-            Category::whereIn('id', $data['sub_categories'] ?? [])->update(['parent_id' => $category->id]);
+            $subCategories ? Category::whereIn('id', $subCategories ?? [])->update(['parent_id' => $category->id]) : null;
         });
 
 
