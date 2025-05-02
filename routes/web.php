@@ -21,6 +21,9 @@ Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::STUD
 
 Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::INSTRUCTOR->value])->prefix('instructor')->as('instructor.')->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\Frontend\InstructorController::class, 'index'])->name('dashboard');
+    Route::get('courses/create/{stage}', [\App\Http\Controllers\Frontend\Instructor\CourseController::class, 'create'])
+        ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.create');
+    Route::resource('courses', \App\Http\Controllers\Frontend\Instructor\CourseController::class)->except('create');
 });
 
 Route::middleware(['auth-lms', 'verified'])->prefix('{role}')

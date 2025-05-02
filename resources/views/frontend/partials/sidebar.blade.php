@@ -14,7 +14,7 @@
                 @php
                 $role = explode('/', request()->getRequestUri())[1] ?? 'student';
                 @endphp
-                <a href="{{route("$role.dashboard")}}" class="active">
+                <a href="{{route("$role.dashboard")}}" class="@if(request()->routeIs("$role.dashboard")) active @endif">
                     <div class="img">
                         <img src="{{asset('assets/images/dash_icon_8.png')}}" alt="icon" class="img-fluid w-100">
                     </div>
@@ -22,11 +22,19 @@
                 </a>
             </li>
             <li>
-                <a href="{{route('profile', $role)}}">
+                <a href="{{route('profile', $role)}}" class="@if(request()->routeIs('profile')) active @endif">
                     <div class="img">
                         <img src="{{asset('assets/images/dash_icon_1.png')}}" alt="icon" class="img-fluid w-100">
                     </div>
                     Profile
+                </a>
+            </li>
+            <li>
+                <a href="{{route('instructor.courses.index')}}" class="@if(request()->routeIs('instructor.courses.index')) active @endif">
+                    <div class="img">
+                        <img src="{{asset('assets/images/dash_icon_1.png')}}" alt="icon" class="img-fluid w-100">
+                    </div>
+                    Course
                 </a>
             </li>
         </ul>
