@@ -4,10 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Str;
 
+/**
+ * @mixin Builder
+ */
 class Course extends Model
 {
+    public const BASIC_INFO = 'basic-info';
+    public const COURSE_CONTENT = 'course-content';
+    public const FINISH = 'finish';
+    public const MORE_INFO = 'more-info';
     protected static function booted()
     {
         static::creating(function ($course) {

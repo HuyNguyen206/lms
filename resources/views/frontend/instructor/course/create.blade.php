@@ -44,16 +44,16 @@
                         <div class="dashboard_add_courses">
                             <ul class="nav nav-pills" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{route('instructor.courses.create', 'basic-info')}}" class="nav-link @if($stage === 'basic-info') active @endif" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Basic Infos</a>
+                                    <a href="{{route('instructor.courses.create', \App\Models\Course::BASIC_INFO)}}" class="nav-link @if($stage === \App\Models\Course::BASIC_INFO) active @endif" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Basic Infos</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{route('instructor.courses.create', 'more-info')}}" class="nav-link @if($stage === 'more-info') active @endif" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" tabindex="-1">More Infos</a>
+                                    <a href="{{route('instructor.courses.create', \App\Models\Course::MORE_INFO)}}" class="nav-link @if($stage === \App\Models\Course::MORE_INFO) active @endif" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" tabindex="-1">More Infos</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{route('instructor.courses.create', 'course-content')}}" class="nav-link @if($stage === 'course-content') active @endif" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" tabindex="-1">Course Contents</a>
+                                    <a href="{{route('instructor.courses.create', \App\Models\Course::COURSE_CONTENT)}}" class="nav-link @if($stage === \App\Models\Course::COURSE_CONTENT) active @endif" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" tabindex="-1">Course Contents</a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{route('instructor.courses.create', 'finish')}}" class="nav-link @if($stage === 'finish') active @endif" type="button" role="tab" aria-controls="pills-contact2" aria-selected="false" tabindex="-1">Finish</a>
+                                    <a href="{{route('instructor.courses.create', \App\Models\Course::FINISH)}}" class="nav-link @if($stage === \App\Models\Course::FINISH) active @endif" type="button" role="tab" aria-controls="pills-contact2" aria-selected="false" tabindex="-1">Finish</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">

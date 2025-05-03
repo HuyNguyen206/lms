@@ -29,8 +29,8 @@ class CourseController extends Controller
             'seo_description' => '',
             'thumbnail' => 'required|image',
             'demo_video_storage' => ['mimetypes:video/avi,video/mpeg,video/quicktime'],
-            'price' => ['decimal:2,4'],
-            'discount_price' => ['decimal:2,4'],
+            'price' => ['numeric'],
+            'discount_price' => ['numeric'],
             'description' => ['string'],
         ]);
 
@@ -43,10 +43,12 @@ class CourseController extends Controller
         }
 
         $data['user_id'] = $request->user()->id;
-        Course::create($data);
+        $course = Course::create($data);
 
         flash()->option('position', 'bottom-right')->success('Course store successfully!');
 
-        return redirect()->route('instructor.courses.index');
+        session('course_create_id', $course->id);
+
+        return redirect()->route('instructor.courses.create', Course::MORE_INFO);
     }
 }
