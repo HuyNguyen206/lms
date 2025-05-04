@@ -16,6 +16,19 @@ class Course extends Model
     public const COURSE_CONTENT = 'course-content';
     public const FINISH = 'finish';
     public const MORE_INFO = 'more-info';
+    public const DONE = 'done';
+
+    public const STAGE_WITH_TRANSITIONS = [
+      self::BASIC_INFO => self::STAGE_TRANSITION_1,
+      self::MORE_INFO => self::STAGE_TRANSITION_2,
+      self::COURSE_CONTENT => self::STAGE_TRANSITION_3,
+      self::FINISH => null,
+    ];
+
+    public const STAGE_TRANSITION_1 = [self::BASIC_INFO => self::MORE_INFO];
+    public const STAGE_TRANSITION_2 = [self::MORE_INFO => self::COURSE_CONTENT];
+    public const STAGE_TRANSITION_3 = [self::COURSE_CONTENT => self::FINISH];
+    public const STAGE_TRANSITION_4 = [self::FINISH => self::DONE];
     protected static function booted()
     {
         static::creating(function ($course) {

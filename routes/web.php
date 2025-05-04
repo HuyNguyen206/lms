@@ -23,7 +23,9 @@ Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::INST
     Route::get('dashboard', [\App\Http\Controllers\Frontend\InstructorController::class, 'index'])->name('dashboard');
     Route::get('courses/create/{stage}', [\App\Http\Controllers\Frontend\Instructor\CourseController::class, 'create'])
         ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.create');
-    Route::resource('courses', \App\Http\Controllers\Frontend\Instructor\CourseController::class)->except('create');
+    Route::post('courses/create/{stage}', [\App\Http\Controllers\Frontend\Instructor\CourseController::class, 'store'])
+        ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.store');
+    Route::resource('courses', \App\Http\Controllers\Frontend\Instructor\CourseController::class)->except(['create', 'store']);
 });
 
 Route::middleware(['auth-lms', 'verified'])->prefix('{role}')
