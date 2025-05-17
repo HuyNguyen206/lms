@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -29,6 +31,11 @@ class Course extends Model
     public const STAGE_TRANSITION_2 = [self::MORE_INFO => self::COURSE_CONTENT];
     public const STAGE_TRANSITION_3 = [self::COURSE_CONTENT => self::FINISH];
     public const STAGE_TRANSITION_4 = [self::FINISH => self::DONE];
+
+    protected $casts = [
+        'status' => Status::class
+    ];
+
     protected static function booted()
     {
         static::creating(function ($course) {
@@ -57,5 +64,10 @@ class Course extends Model
             get: fn ($value) => $value / 100,
             set: fn ($value) => $value * 100,
         );
+    }
+
+    public function getThumbnail()
+    {
+        return Storage::disk('public')->url($this->thumbnail);
     }
 }

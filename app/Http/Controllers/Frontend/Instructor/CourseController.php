@@ -19,13 +19,16 @@ class CourseController extends Controller
     {
 //        Session::forget(['course_create_id', 'stage_transition']);
 //        return ;
-        $categories = Category::all();
+        $parentCategories = Category::where('is_enable', 1)
+            ->whereNull('parent_id')
+            ->withWhereHas('categories')
+            ->get();
         $languages = Course\Language::all();
         $levels = Course\Level::all();
 
         if (!session('course_create_id')) {
             if ($stage === Course::BASIC_INFO) {
-                return view('frontend/instructor/course/create', compact('stage', 'categories', 'languages', 'levels'));
+                return view('frontend/instructor/course/create', compact('stage', 'parentCategories', 'languages', 'levels'));
             }
 
             flash()->option('position', 'bottom-right')->warning("Redirect from stage $stage to stage basic-info");
@@ -40,12 +43,29 @@ class CourseController extends Controller
             return response()->redirectTo(route('instructor.courses.create', $correctStage));
         }
 
-        return view('frontend/instructor/course/create', ['stage' => $correctStage] + compact('categories', 'languages', 'levels'));
+        return view('frontend/instructor/course/create/create', ['stage' => $correctStage] + compact('parentCategories', 'languages', 'levels'));
+    }
+
+    public function edit(Course $course, ?string $stage = null)
+    {
+        $stage = $stage ?? Course::BASIC_INFO;
+
+        $parentCategories = Category::where('is_enable', 1)
+            ->whereNull('parent_id')
+            ->withWhereHas('categories')
+            ->get();
+        $languages = Course\Language::all();
+        $levels = Course\Level::all();
+
+        return view("frontend/instructor/course/edit/edit", compact('course', 'stage', 'parentCategories', 'languages', 'levels'));
+
     }
 
     public function index()
     {
-        return view('frontend/instructor/course/index');
+        $courses = Course::where('user_id', auth()->id())->paginate();
+
+        return view('frontend/instructor/course/index', compact('courses'));
     }
 
     public function store(Request $request, string $stage)
@@ -96,9 +116,9 @@ class CourseController extends Controller
 
     private function stage2(Request $request)
     {
-        if (!session('course_create_id') || session('next_stage') !== Course::MORE_INFO) {
-            return redirect()->route('instructor.courses.create', Course::BASIC_INFO);
-        }
+//        if (!session('course_create_id') || session('next_stage') !== Course::MORE_INFO) {
+//            return redirect()->route('instructor.courses.create', Course::BASIC_INFO);
+//        }
 
         $data = $request->validate([
             'capacity' => 'required',
@@ -108,9 +128,9 @@ class CourseController extends Controller
             'language_id' => [Rule::exists('languages', 'id')],
         ]);
 
-        $isQNA = $request->boolean('qna');
+        $qna = $request->boolean('qna');
         $hasCertificate = $request->boolean('has_certificate');
-        $data = [...$data, ...compact('isQNA', 'hasCertificate')];
+        $data = [...$data, ...['qna' => $qna, 'has_certificate' => $hasCertificate]];
 
         Course::whereKey(session('course_create_id'))->update($data);
 

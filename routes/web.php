@@ -25,7 +25,13 @@ Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::INST
         ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.create');
     Route::post('courses/create/{stage}', [\App\Http\Controllers\Frontend\Instructor\CourseController::class, 'store'])
         ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.store');
-    Route::resource('courses', \App\Http\Controllers\Frontend\Instructor\CourseController::class)->except(['create', 'store']);
+
+    Route::get('courses/edit/{course}/{stage?}', [\App\Http\Controllers\Frontend\Instructor\CourseController::class, 'edit'])
+        ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.edit');
+    Route::post('courses/edit/{course}/{stage?}', [\App\Http\Controllers\Frontend\Instructor\CourseController::class, 'update'])
+        ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.update');
+
+    Route::resource('courses', \App\Http\Controllers\Frontend\Instructor\CourseController::class)->except(['create', 'store', 'edit', 'update']);
 });
 
 Route::middleware(['auth-lms', 'verified'])->prefix('{role}')

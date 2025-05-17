@@ -45,8 +45,12 @@
                         <label for="#">Category *</label>
                         <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl" tabindex="-1" aria-hidden="true">
                             <option value="" data-select2-id="select2-data-3-8buh"> Please Select </option>
-                            @foreach($categories as $category)
-                                <option @selected($category->id === old('category_id')) value="{{$category->id}}" name="category_id">{{$category->name}}</option>
+                            @foreach($parentCategories as $parentCategory)
+                                <optgroup label="{{$parentCategory->name}}">
+                                    @foreach($parentCategory->categories as $category)
+                                    <option @selected($category->id === old('category_id')) value="{{$category->id}}" name="category_id">{{$category->name}}</option>
+                                    @endforeach
+                                </optgroup>
                             @endforeach
                         </select>
                         <x-input-error :messages="$errors->get('category_id')" class="mt-2" style="color: red"/>
@@ -56,10 +60,10 @@
                 <div class="col-xl-4">
                     <div class="add_course_more_info_radio_box">
                         <label for="#">Level *</label>
-                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl2" tabindex="-1" aria-hidden="true">
+                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl2" tabindex="-1" aria-hidden="true"  name="level_id">
                             <option value="" data-select2-id="select2-data-3-8buh"> Please Select </option>
                             @foreach($levels as $level)
-                                <option @selected($level->id === old('level_id')) value="{{$level->id}}" name="level_id">{{$level->name}}</option>
+                                <option @selected($level->id === old('level_id')) value="{{$level->id}}">{{$level->name}}</option>
                             @endforeach
                         </select>
                         <x-input-error :messages="$errors->get('level_id')" class="mt-2" style="color: red"/>
