@@ -1,7 +1,8 @@
 <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
     <div class="add_course_more_info">
-        <form action="{{route('instructor.courses.store', \App\Models\Course::MORE_INFO)}}" method="post">
+        <form action="{{route('instructor.courses.update', [$course, \App\Models\Course::MORE_INFO])}}" method="post">
             @csrf
+            @method('patch')
             <div class="row">
                 <div class="col-xl-6">
                     <div class="add_course_more_info_input">
@@ -43,7 +44,7 @@
                 <div class="col-xl-4">
                     <div class="add_course_more_info_radio_box">
                         <label for="#">Category *</label>
-                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl" tabindex="-1" aria-hidden="true">
+                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl" tabindex="-1" aria-hidden="true" name="category_id">
                             <option value="" data-select2-id="select2-data-3-8buh"> Please Select </option>
                             @foreach($parentCategories as $parentCategory)
                                 <optgroup label="{{$parentCategory->name}}">
@@ -73,7 +74,7 @@
                 <div class="col-xl-4">
                     <div class="add_course_more_info_radio_box">
                         <label for="#">Language *</label>
-                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl3" tabindex="-1" aria-hidden="true">
+                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl3" tabindex="-1" aria-hidden="true" name="language_id">
                             <option value="" data-select2-id="select2-data-3-8buh"> Please Select </option>
                             @foreach($languages as $language)
                                 <option @selected($language->id === old('language_id', $course->language_id)) value="{{$language->id}}" name="language_id">{{$language->name}}</option>

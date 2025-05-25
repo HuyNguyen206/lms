@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Instructor;
 
+use App\Enums\VideoStorageType;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
@@ -28,7 +29,7 @@ class CourseController extends Controller
 
         if (!session('course_create_id')) {
             if ($stage === Course::BASIC_INFO) {
-                return view('frontend/instructor/course/create', compact('stage', 'parentCategories', 'languages', 'levels'));
+                return view('frontend/instructor/course/create/create', compact('stage', 'parentCategories', 'languages', 'levels'));
             }
 
             flash()->option('position', 'bottom-right')->warning("Redirect from stage $stage to stage basic-info");
@@ -72,9 +73,9 @@ class CourseController extends Controller
     {
         switch ($stage) {
             case Course::BASIC_INFO:
-                return $this->stage1($request);
+                return $this->createStage1($request);
             case Course::MORE_INFO:
-                return $this->stage2($request);
+                return $this->createStage2($request);
             case Course::COURSE_CONTENT:
             case Course::FINISH:
         }
@@ -84,13 +85,15 @@ class CourseController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    private function stage1(Request $request): \Illuminate\Http\RedirectResponse
+    private function createStage1(Request $request): \Illuminate\Http\RedirectResponse
     {
+        $videoFile = $request->file('demo_video_url');
         $data = $request->validate([
             'name' => 'required|unique:courses,name',
             'seo_description' => '',
             'thumbnail' => 'required|image',
-            'demo_video_storage' => ['mimetypes:video/avi,video/mpeg,video/quicktime'],
+            'demo_video_storage' => [Rule::enum(VideoStorageType::class)],
+            'demo_video_url' => $videoFile ? ['mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4'] : ['string'],
             'price' => ['numeric'],
             'discount_price' => ['numeric'],
             'description' => ['string'],
@@ -99,9 +102,13 @@ class CourseController extends Controller
         $thumbnailPath = $this->upload($data['thumbnail'], disk: 'public', folder: 'course');
         $data['thumbnail'] = $thumbnailPath;
 
-        if ($video = $request->file('demo_video_storage')) {
-            $videoPath = $this->upload($video, disk: 'public', folder: 'course/video');
-            $data['demo_video_storage'] = $videoPath;
+        if ($request->has('demo_video_url')) {
+            if ($videoFile) {
+                $videoPath = $this->upload($videoFile, folder: 'course/video');
+                $data['demo_video_url'] = $videoPath;
+            } else {
+                $data['demo_video_url'] = $request->get('demo_video_url');
+            }
         }
 
         $data['user_id'] = $request->user()->id;
@@ -114,7 +121,7 @@ class CourseController extends Controller
         return redirect()->route('instructor.courses.create', Course::MORE_INFO);
     }
 
-    private function stage2(Request $request)
+    private function createStage2(Request $request)
     {
 //        if (!session('course_create_id') || session('next_stage') !== Course::MORE_INFO) {
 //            return redirect()->route('instructor.courses.create', Course::BASIC_INFO);
@@ -139,5 +146,74 @@ class CourseController extends Controller
         Session::put('stage_transition', Course::STAGE_TRANSITION_2);
 
         return redirect()->route('instructor.courses.create', Course::COURSE_CONTENT);
+    }
+
+    public function update(Request $request, Course $course, string $stage)
+    {
+        switch ($stage) {
+            case Course::BASIC_INFO:
+                return $this->updateStage1($request, $course);
+            case Course::MORE_INFO:
+                return $this->updateStage2($request, $course);
+            case Course::COURSE_CONTENT:
+            case Course::FINISH:
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private function updateStage1(Request $request, Course $course): \Illuminate\Http\RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => 'required|unique:courses,name',
+            'seo_description' => '',
+            'demo_video_storage' => ['mimetypes:video/avi,video/mpeg,video/quicktime'],
+            'price' => ['numeric'],
+            'discount_price' => ['numeric'],
+            'description' => ['string'],
+        ]);
+
+
+        if ($request->file('thumbnail')) {
+            $thumbnailPath = $this->upload($data['thumbnail'], disk: 'public', folder: 'course');
+            $data['thumbnail'] = $thumbnailPath;
+            $this->delete($course->thumbnail, disk: 'public');
+
+        }
+
+        if ($video = $request->file('demo_video_storage')) {
+            $videoPath = $this->upload($video, disk: 'public', folder: 'course/video');
+            $data['demo_video_storage'] = $videoPath;
+            $this->delete($course->demo_video_storage, disk: 'public');
+        }
+
+        $course->update($data);
+
+        flash()->option('position', 'bottom-right')->success('Course basic info update successfully!');
+
+        return redirect()->route('instructor.courses.edit',[$course, Course::MORE_INFO]);
+    }
+
+    private function updateStage2(Request $request, Course $course)
+    {
+        $data = $request->validate([
+            'capacity' => 'required',
+            'level_id' => ['required', Rule::exists('levels', 'id')],
+            'duration' => 'required',
+            'category_id' => [Rule::exists('categories', 'id')],
+            'language_id' => [Rule::exists('languages', 'id')],
+        ]);
+
+        $qna = $request->boolean('qna');
+        $hasCertificate = $request->boolean('has_certificate');
+        $data = [...$data, ...['qna' => $qna, 'has_certificate' => $hasCertificate]];
+
+        $course->update($data);
+
+        flash()->option('position', 'bottom-right')->success('Course more info update successfully!');
+
+        return redirect()->route('instructor.courses.edit',[$course, Course::COURSE_CONTENT]);
     }
 }

@@ -1,7 +1,8 @@
 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
     <div class="add_course_basic_info">
-        <form method="post" action="{{route('instructor.courses.store', \App\Models\Course::BASIC_INFO)}}" enctype="multipart/form-data">
+        <form method="post" action="{{route('instructor.courses.update', [$course, \App\Models\Course::BASIC_INFO])}}" enctype="multipart/form-data">
             @csrf
+            @method('patch')
             <div class="row">
                 <div class="col-xl-12">
                     <div class="add_course_basic_info_imput">

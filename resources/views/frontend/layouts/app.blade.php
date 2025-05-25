@@ -39,7 +39,7 @@
 
 
 @include('frontend.partials.js')
-
+@yield('js')
 </body>
 
 </html>
