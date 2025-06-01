@@ -43,12 +43,12 @@
                 <div class="col-xl-4">
                     <div class="add_course_more_info_radio_box">
                         <label for="#">Category *</label>
-                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl" tabindex="-1" aria-hidden="true">
+                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl" tabindex="-1" aria-hidden="true" name="category_id">
                             <option value="" data-select2-id="select2-data-3-8buh"> Please Select </option>
                             @foreach($parentCategories as $parentCategory)
                                 <optgroup label="{{$parentCategory->name}}">
                                     @foreach($parentCategory->categories as $category)
-                                    <option @selected($category->id === old('category_id')) value="{{$category->id}}" name="category_id">{{$category->name}}</option>
+                                    <option @selected($category->id === old('category_id')) value="{{$category->id}}" >{{$category->name}}</option>
                                     @endforeach
                                 </optgroup>
                             @endforeach
@@ -73,10 +73,10 @@
                 <div class="col-xl-4">
                     <div class="add_course_more_info_radio_box">
                         <label for="#">Language *</label>
-                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl3" tabindex="-1" aria-hidden="true">
+                        <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl3" tabindex="-1" aria-hidden="true" name="language_id">
                             <option value="" data-select2-id="select2-data-3-8buh"> Please Select </option>
                             @foreach($languages as $language)
-                                <option @selected($language->id === old('language_id')) value="{{$language->id}}" name="language_id">{{$language->name}}</option>
+                                <option @selected($language->id === old('language_id')) value="{{$language->id}}" >{{$language->name}}</option>
                             @endforeach
                         </select>
                         <x-input-error :messages="$errors->get('language_id')" class="mt-2" style="color: red"/>

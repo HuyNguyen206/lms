@@ -64,7 +64,7 @@ class CourseController extends Controller
 
     public function index()
     {
-        $courses = Course::where('user_id', auth()->id())->paginate();
+        $courses = Course::where('user_id', auth()->id())->latest()->paginate();
 
         return view('frontend/instructor/course/index', compact('courses'));
     }
@@ -87,13 +87,12 @@ class CourseController extends Controller
      */
     private function createStage1(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $videoFile = $request->file('demo_video_url');
         $data = $request->validate([
             'name' => 'required|unique:courses,name',
             'seo_description' => '',
             'thumbnail' => 'required|image',
             'demo_video_storage' => [Rule::enum(VideoStorageType::class)],
-            'demo_video_url' => $videoFile ? ['mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4'] : ['string'],
+            'filepath' => ['string'],
             'price' => ['numeric'],
             'discount_price' => ['numeric'],
             'description' => ['string'],
@@ -103,13 +102,9 @@ class CourseController extends Controller
         $data['thumbnail'] = $thumbnailPath;
 
         if ($request->has('demo_video_url')) {
-            if ($videoFile) {
-                $videoPath = $this->upload($videoFile, folder: 'course/video');
-                $data['demo_video_url'] = $videoPath;
-            } else {
-                $data['demo_video_url'] = $request->get('demo_video_url');
-            }
+            $data['demo_video_url'] = $request->get('filepath');
         }
+        unset($data['filepath']);
 
         $data['user_id'] = $request->user()->id;
         $course = Course::create($data);
@@ -131,8 +126,8 @@ class CourseController extends Controller
             'capacity' => 'required',
             'level_id' => ['required', Rule::exists('levels', 'id')],
             'duration' => 'required',
-            'category_id' => [Rule::exists('categories', 'id')],
-            'language_id' => [Rule::exists('languages', 'id')],
+            'category_id' => ['required', Rule::exists('categories', 'id')],
+            'language_id' => ['required', Rule::exists('languages', 'id')],
         ]);
 
         $qna = $request->boolean('qna');

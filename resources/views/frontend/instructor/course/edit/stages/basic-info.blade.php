@@ -25,7 +25,7 @@
                         <label for="#">Thumbnail *</label>
                         <input type="file" name="thumbnail">
                         @if($thumbnail = $course->getThumbnail())
-                            <img src="{{$thumbnail}}" alt="" style="width: 200px">
+                            <img src="{{$thumbnail}}" alt="" style="width: 200px !important;">
                         @endif
                         <x-input-error :messages="$errors->get('thumbnail')" class="mt-2" style="color: red"/>
 
@@ -33,25 +33,52 @@
                 </div>
                 <div class="col-xl-6">
                     <div class="add_course_basic_info_imput">
-                        <label for="#">Demo Video Storage <b>(optional)</b></label>
-                        <select class="select_js">
-                            <option value=""> Please Select </option>
-                            <option value="">Red</option>
-                            <option value="">Black</option>
-                            <option value="">Orange</option>
-                            <option value="">Rose Gold</option>
-                            <option value="">Pink</option>
-                        </select><div class="nice-select select_js" tabindex="0"><span class="current"> Please Select </span><ul class="list"><li data-value="" class="option selected"> Please Select </li><li data-value="" class="option">Red</li><li data-value="" class="option">Black</li><li data-value="" class="option">Orange</li><li data-value="" class="option">Rose Gold</li><li data-value="" class="option">Pink</li></ul></div>
+                        <label for="#">Video source <b>(optional)</b></label>
+                        <select class="select_2" id="select_source" name="demo_video_storage">
+                            <option value=""> Please Select</option>
+                            <option
+                                @selected(old('demo_video_storage', $course->demo_video_storage) == \App\Enums\VideoStorageType::UPLOAD->value) value="{{\App\Enums\VideoStorageType::UPLOAD->value}}">
+                                Upload
+                            </option>
+                            <option
+                                @selected(old('demo_video_storage', $course->demo_video_storage) == \App\Enums\VideoStorageType::YOUTUBE->value) value="{{\App\Enums\VideoStorageType::YOUTUBE->value}}">
+                                Youtube
+                            </option>
+                            <option
+                                @selected(old('demo_video_storage', $course->demo_video_storage) == \App\Enums\VideoStorageType::VIMEO->value) value="{{\App\Enums\VideoStorageType::VIMEO->value}}">
+                                Vimeo
+                            </option>
+                            <option
+                                @selected(old('demo_video_storage', $course->demo_video_storage) == \App\Enums\VideoStorageType::EXTERNAL_LINK->value) value="{{\App\Enums\VideoStorageType::EXTERNAL_LINK->value}}">
+                                External link
+                            </option>
+                        </select>
                     </div>
                 </div>
-                <div class="col-xl-6">
-                    <div class="add_course_basic_info_imput">
-                        <label for="#">Path</label>
-                        <input type="file" name="demo_video_storage">
-                        <x-input-error :messages="$errors->get('demo_video_storage')" class="mt-2" style="color: red"/>
 
+                <div class="col-xl-6">
+                    <div class="add_course_basic_info_imput" style="margin-bottom: 0">
+                        <label for="#">Video file/url</label>
+                        <div id="source_file">
+                            <div class="input-group">
+                               <span class="input-group-btn">
+                                 <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
+                                   <i class="fa fa-picture-o"></i> Choose
+                                 </a>
+                               </span>
+                                <input id="thumbnail" class="form-control" type="text" name="filepath" style="width: 200px" value="{{old('demo_video_url', $course->demo_video_url)}}">
+                            </div>
+                            <div id="holder" style="margin-top:15px;max-height:100px; width: 100px">
+                            </div>
+
+                        </div>
                     </div>
+
+                    <input type="text" name="demo_video_url" id="source_path">
+                    <x-input-error :messages="$errors->get('demo_video_url')" class="mt-2" style="color: red"/>
+
                 </div>
+
                 <div class="col-xl-6">
                     <div class="add_course_basic_info_imput">
                         <label for="#">Price *</label>
@@ -80,3 +107,6 @@
         </form>
     </div>
 </div>
+@section('js')
+    @include('frontend/instructor/partial/js')
+@endsection
