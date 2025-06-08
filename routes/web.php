@@ -32,7 +32,7 @@ Route::middleware(['auth-lms', 'verified', 'check-role:' . \App\Enums\Role::INST
         ->whereIn('stage', ['basic-info', 'course-content', 'finish', 'more-info'])->name('courses.update');
 
     Route::resource('courses', \App\Http\Controllers\Frontend\Instructor\CourseController::class)->except(['create', 'store', 'edit', 'update']);
-    Route::resource('courses.chapters', \App\Http\Controllers\Frontend\Instructor\ChapterController::class)->shallow();
+    Route::resource('courses.chapters', \App\Http\Controllers\Frontend\Instructor\ChapterController::class)->scoped();
 
     Route::prefix('filemanager')->group(function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();

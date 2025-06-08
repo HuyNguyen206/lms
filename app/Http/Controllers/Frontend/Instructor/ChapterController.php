@@ -19,4 +19,9 @@ class ChapterController extends Controller
 
         return response()->json(['message' => 'Chapter created successfully']);
     }
+
+    public function update(Request $request, Course $course, Course\Chapter $chapter)
+    {
+
+    }
 }

@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Enums\Status;
+use App\Models\Course\Chapter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -48,6 +50,11 @@ class Course extends Model
                 $course->slug = Str::slug($course->name);
             }
         });
+    }
+
+    public function chapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class);
     }
 
     public function price(): Attribute
