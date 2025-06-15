@@ -18,7 +18,7 @@
 <!--Scroll Button js-->
 <script src="{{asset('assets/js/scroll_button.js')}}"></script>
 <!--pointer js-->
-<script src="{{asset('assets/js/pointer.js')}}"></script>
+<script defer src="{{asset('assets/js/pointer.js')}}"></script>
 <!--range slider js-->
 <script src="{{asset('assets/js/range_slider.js')}}"></script>
 <!--barfiller js-->

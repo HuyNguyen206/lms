@@ -7,6 +7,10 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
     <title>EduCore - Online Courses & Education HTML Template</title>
 @include('frontend.partials.css')
+@stack('css_extend')
+@include('frontend.partials.js')
+@yield('js-init-upload')
+
 </head>
 
 <body class="home_3">
@@ -38,8 +42,9 @@
     =================================-->
 
 
-@include('frontend.partials.js')
 @yield('js')
+@stack('js_extend')
+
 </body>
 
 </html>

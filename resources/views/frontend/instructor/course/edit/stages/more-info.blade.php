@@ -77,7 +77,7 @@
                         <select class="select_2 select2-hidden-accessible" data-select2-id="select2-data-1-q4dl3" tabindex="-1" aria-hidden="true" name="language_id">
                             <option value="" data-select2-id="select2-data-3-8buh"> Please Select </option>
                             @foreach($languages as $language)
-                                <option @selected($language->id === old('language_id', $course->language_id)) value="{{$language->id}}" name="language_id">{{$language->name}}</option>
+                                <option @selected($language->id === old('language_id', $course->language_id)) value="{{$language->id}}">{{$language->name}}</option>
                             @endforeach
                         </select>
                         <x-input-error :messages="$errors->get('language_id')" class="mt-2" style="color: red"/>

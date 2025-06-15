@@ -2,8 +2,11 @@
 
 namespace App\Enums;
 
+use App\Traits\HasList;
+
 Enum VideoStorageType: int
 {
+    use HasList;
     case UPLOAD = 1;
     case YOUTUBE = 2;
     case VIMEO = 3;

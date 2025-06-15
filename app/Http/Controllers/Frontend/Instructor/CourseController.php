@@ -58,7 +58,14 @@ class CourseController extends Controller
         $languages = Course\Language::all();
         $levels = Course\Level::all();
 
-        return view("frontend/instructor/course/edit/edit", compact('course', 'stage', 'parentCategories', 'languages', 'levels'));
+        $data = compact('course', 'stage', 'parentCategories', 'languages', 'levels');
+
+        if ($stage === Course::COURSE_CONTENT) {
+            $courseChapters = $course->chapters;
+            $data['chapters'] = $courseChapters;
+        }
+
+        return view("frontend/instructor/course/edit/edit", $data);
 
     }
 

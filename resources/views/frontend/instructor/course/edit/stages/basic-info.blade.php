@@ -107,6 +107,6 @@
         </form>
     </div>
 </div>
-@section('js')
-    @include('frontend/instructor/partial/js')
+@section('js-init-upload')
+    @include('frontend/instructor/partial/init-upload')
 @endsection
