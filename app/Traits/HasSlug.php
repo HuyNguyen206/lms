@@ -10,11 +10,11 @@ trait HasSlug
     protected static function booted()
     {
         static::creating(function (Model $model) {
-            $model->slug = Str::slug($model->name);
+            $model->slug = Str::slug($model->slugColumn ?? $model->name);
         });
 
         static::updating(function (Model $model) {
-            $model->slug = Str::slug($model->name);
+            $model->slug = Str::slug($model->slugColumn ?? $model->name);
         });
     }
 }

@@ -19,13 +19,13 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Course::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(\App\Models\Course\Chapter::class)->constrained()->cascadeOnDelete();
-            $table->string('file_path')->nullable();
+            $table->string('video_url')->nullable();
             $table->string('storage')->nullable();
-            $table->string('volume');
+            $table->string('volume')->nullable();
             $table->string('duration');
             $table->string('file_type');
             $table->boolean('is_downloadable')->default(true);
-            $table->boolean('is_review')->default(true);
+            $table->boolean('is_preview')->default(true);
             $table->string('status')->default(\App\Enums\Status::ACTIVE->value);
             $table->tinyInteger('order');
             $table->tinyInteger('lesson_type')->nullable();

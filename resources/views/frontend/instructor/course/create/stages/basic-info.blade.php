@@ -106,5 +106,5 @@
     </div>
 </div>
 @section('js')
-@include('frontend/instructor/partial/js')
+@include('frontend/instructor/partial/init-upload')
 @endsection

@@ -100,6 +100,7 @@ class CourseController extends Controller
             'thumbnail' => 'required|image',
             'demo_video_storage' => [Rule::enum(VideoStorageType::class)],
             'filepath' => ['string'],
+            'source_path' => ['string'],
             'price' => ['numeric'],
             'discount_price' => ['numeric'],
             'description' => ['string'],
@@ -108,12 +109,10 @@ class CourseController extends Controller
         $thumbnailPath = $this->upload($data['thumbnail'], disk: 'public', folder: 'course');
         $data['thumbnail'] = $thumbnailPath;
 
-        if ($request->has('demo_video_url')) {
-            $data['demo_video_url'] = $request->get('filepath');
-        }
-        unset($data['filepath']);
-
         $data['user_id'] = $request->user()->id;
+        $data['demo_video_url'] = $data['filepath'] ?? $data['source_path'];
+        unset($data['filepath'], $data['source_path']);
+
         $course = Course::create($data);
         flash()->option('position', 'bottom-right')->success('Course basic info store successfully!');
 
@@ -169,9 +168,11 @@ class CourseController extends Controller
     private function updateStage1(Request $request, Course $course): \Illuminate\Http\RedirectResponse
     {
         $data = $request->validate([
-            'name' => 'required|unique:courses,name',
+            'name' => ['required', Rule::unique('courses', 'name')->ignoreModel($course)],
             'seo_description' => '',
-            'demo_video_storage' => ['mimetypes:video/avi,video/mpeg,video/quicktime'],
+            'demo_video_storage' => [Rule::enum(VideoStorageType::class)],
+            'filepath' => ['string'],
+            'source_path' => ['string'],
             'price' => ['numeric'],
             'discount_price' => ['numeric'],
             'description' => ['string'],
@@ -185,10 +186,15 @@ class CourseController extends Controller
 
         }
 
-        if ($video = $request->file('demo_video_storage')) {
-            $videoPath = $this->upload($video, disk: 'public', folder: 'course/video');
-            $data['demo_video_storage'] = $videoPath;
-            $this->delete($course->demo_video_storage, disk: 'public');
+        $data['demo_video_url'] = $request->get('demo_video_storage') == VideoStorageType::UPLOAD->value ? $data['filepath'] : $data['source_path'];
+        $data['video_url'] = $data['filepath'] ?? $data['source_path'];
+
+        if (isset($data['filepath'])) {
+            unset($data['filepath']);
+        }
+
+        if (isset($data['source_path'])) {
+            unset($data['source_path']);
         }
 
         $course->update($data);

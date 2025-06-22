@@ -5,14 +5,7 @@
     @if($isMerged)
         <x-modal-popup :idButton="$idButton"></x-modal-popup>
     @endif
-{{--    <!-- Modal -->--}}
-{{--    <div class="modal fade" id="exampleModal_{{$idButton}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
-{{--        <div class="modal-dialog modal-dialog-centered">--}}
-{{--            <div class="modal-content">--}}
 
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
 </div>
 
 @push('js_extend')

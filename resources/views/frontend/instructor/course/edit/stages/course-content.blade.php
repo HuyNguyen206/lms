@@ -16,7 +16,7 @@
         </div>
         <div class="accordion" id="accordionExample">
             @forelse($chapters as $chapter)
-                <x-modal-popup idButton="showModalCreateLesson_{{$chapter->id}}"></x-modal-popup>
+                <x-modal-popup idButton="showModalCreateLesson_{{$chapter->id}}" style="max-width: 800px"></x-modal-popup>
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
