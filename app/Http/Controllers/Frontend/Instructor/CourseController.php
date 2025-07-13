@@ -16,6 +16,13 @@ class CourseController extends Controller
 {
     use FileUpload;
 
+    public function index()
+    {
+        $courses = Course::where('user_id', auth()->id())->latest()->paginate();
+
+        return view('frontend/instructor/course/index', compact('courses'));
+    }
+
     public function create(string $stage)
     {
 //        Session::forget(['course_create_id', 'stage_transition']);
@@ -47,34 +54,6 @@ class CourseController extends Controller
         return view('frontend/instructor/course/create/create', ['stage' => $correctStage] + compact('parentCategories', 'languages', 'levels'));
     }
 
-    public function edit(Course $course, ?string $stage = null)
-    {
-        $stage = $stage ?? Course::BASIC_INFO;
-
-        $parentCategories = Category::where('is_enable', 1)
-            ->whereNull('parent_id')
-            ->withWhereHas('categories')
-            ->get();
-        $languages = Course\Language::all();
-        $levels = Course\Level::all();
-
-        $data = compact('course', 'stage', 'parentCategories', 'languages', 'levels');
-
-        if ($stage === Course::COURSE_CONTENT) {
-            $courseChapters = $course->chapters;
-            $data['chapters'] = $courseChapters;
-        }
-
-        return view("frontend/instructor/course/edit/edit", $data);
-
-    }
-
-    public function index()
-    {
-        $courses = Course::where('user_id', auth()->id())->latest()->paginate();
-
-        return view('frontend/instructor/course/index', compact('courses'));
-    }
 
     public function store(Request $request, string $stage)
     {
@@ -147,6 +126,28 @@ class CourseController extends Controller
         Session::put('stage_transition', Course::STAGE_TRANSITION_2);
 
         return redirect()->route('instructor.courses.create', Course::COURSE_CONTENT);
+    }
+
+    public function edit(Course $course, ?string $stage = null)
+    {
+        $stage = $stage ?? Course::BASIC_INFO;
+
+        $parentCategories = Category::where('is_enable', 1)
+            ->whereNull('parent_id')
+            ->withWhereHas('categories')
+            ->get();
+        $languages = Course\Language::all();
+        $levels = Course\Level::all();
+
+        $data = compact('course', 'stage', 'parentCategories', 'languages', 'levels');
+
+        if ($stage === Course::COURSE_CONTENT) {
+           $course->load('chapters.lessons');
+           $data['course'] = $course;
+        }
+
+        return view("frontend/instructor/course/edit/edit", $data);
+
     }
 
     public function update(Request $request, Course $course, string $stage)

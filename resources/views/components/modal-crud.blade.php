@@ -14,12 +14,17 @@
             $('#{{$idButton}}').on('click', function (e) {
                 e.preventDefault(); // prevent default anchor behavior
                 var modalContent = $('#exampleModal_{{$idButton}} .modal-content');
+                var routeUrl = '{{$routeView}}?route-submit={{$routeSubmit}}';
+
+                @if($extraParams)
+                    routeUrl += '&{!!  $extraParams !!}';
+                @endif
 
                 // Show loading indicator
                 modalContent.html('<div class="text-center p-4">Loading...</div>');
                 // Send AJAX request to fetch content
                 $.ajax({
-                    url: '{{$routeView}}?route-submit={{$routeSubmit}}',
+                    url: routeUrl,
                     type: 'GET',
                     success: function (response) {
                         modalContent.html(response); // Replace content with response HTML

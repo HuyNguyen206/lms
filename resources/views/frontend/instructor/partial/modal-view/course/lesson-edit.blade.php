@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Create lesson</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Edit lesson</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 <div class="modal-body">
@@ -9,14 +9,14 @@
             <div class="col-xl-12">
                 <div class="add_course_basic_info_imput">
                     <label for="#">Title *</label>
-                    <input type="text" placeholder="Title" name="title">
+                    <input type="text" placeholder="Title" name="title" value="{{old('title', $lesson->title)}}">
                     <li style="color: red; display: none" id="title_error"></li>
                 </div>
             </div>
             <div class="col-xl-12">
                 <div class="add_course_basic_info_imput">
                     <label for="#">Description *</label>
-                    <textarea name="description" id="" cols="30" rows="5"></textarea>
+                    <textarea name="description" id="" cols="30" rows="5">{{old('description', $lesson->description)}}</textarea>
                     <li style="color: red; display: none" id="description_error"></li>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                         <option value="" data-select2-id="select2-data-3-8buh"> Please Select</option>
 
                         @foreach(\App\Enums\VideoStorageType::labels() as $type => $name)
-                            <option value="{{$type}}">{{$name}}</option>
+                            <option @selected(old('storage', $lesson->storage) == $type) value="{{$type}}">{{$name}}</option>
                         @endforeach
                     </select>
                     <li style="color: red; display: none" id="storage_error"></li>
@@ -62,7 +62,7 @@
                             data-select2-id="select2-data-1-q4dl2" tabindex="-1" aria-hidden="true">
                         <option value="" data-select2-id="select2-data-3-8buh"> Please Select</option>
                         @foreach(\App\Enums\FileType::labels() as $type => $name)
-                            <option value="{{$type}}">{{$name}}</option>
+                            <option @selected(old('file_type', $lesson->file_type) == $type) value="{{$type}}">{{$name}}</option>
                         @endforeach
                     </select>
                     <li style="color: red; display: none" id="file_type_error"></li>
@@ -76,7 +76,7 @@
                         <option value="" data-select2-id="select2-data-3-8buh"> Please Select</option>
 
                         @foreach(\App\Enums\LessonType::labels() as $type => $name)
-                            <option value="{{$type}}">{{$name}}</option>
+                            <option @selected(old('lesson_type', $lesson->lesson_type) == $type) value="{{$type}}">{{$name}}</option>
                         @endforeach
                     </select>
                     <li style="color: red; display: none" id="lesson_type_error"></li>
@@ -85,26 +85,27 @@
             <div class="col-xl-6">
                 <div class="add_course_basic_info_imput">
                     <label for="#">Order</label>
-                    <input type="number" placeholder="Seo description" name="order">
+                    <input type="number" placeholder="Seo description" name="order" value="{{old('order', $lesson->order)}}">
                     <li style="color: red; display: none" id="order_error"></li>
                 </div>
             </div>
             <div class="col-xl-6">
                 <div class="form-check form-switch d-flex align-items-center">
-                    <input class="form-check-input" style="margin-right: 20px" type="checkbox" name="is_preview">
+                    <input class="form-check-input" style="margin-right: 20px" type="checkbox" name="is_preview" @checked(old('is_preview', $lesson->is_preview) == true)>
                     <label class="form-check-label" for="flexSwitchCheckDefault">Is preview</label>
                 </div>
             </div>
             <div class="col-xl-6">
                 <div class="form-check form-switch d-flex align-items-center">
-                    <input class="form-check-input mr-2" style="margin-right: 20px" type="checkbox" id="flexSwitchCheckDefault" name="is_downloadable">
+                    <input class="form-check-input mr-2" style="margin-right: 20px" type="checkbox" id="flexSwitchCheckDefault" name="is_downloadable"
+                        @checked(old('is_downloadable', $lesson->is_downloadable) == true)>
                     <label class="form-check-label" for="flexSwitchCheckDefault">Is downloadable</label>
                 </div>
             </div>
             <div class="col-xl-6">
                 <div class="add_course_basic_info_imput">
                     <label for="#">Duration</label>
-                    <input type="number" placeholder="Seo description" name="duration">
+                    <input type="number" placeholder="Seo description" name="duration" value="{{old('duration', $lesson->duration) }}">
                     <li style="color: red; display: none" id="duration_error"></li>
                 </div>
             </div>
@@ -157,7 +158,7 @@
 
             $.ajax({
                 url: '{{$routeSubmit}}',
-                method: 'POST',
+                method: 'PUT',
                 data: {
                     title: title,
                     description: description,
@@ -176,7 +177,7 @@
                     // Handle success (e.g. close modal or show success message)
                     var modal = bootstrap.Modal.getInstance(document.getElementsByClassName('modal')[0]);
                     if (modal) modal.hide();
-                    alert('Lesson submitted successfully!');
+                    alert('Lesson update successfully!');
                     clearInput();
                 },
                 error: function (xhr) {

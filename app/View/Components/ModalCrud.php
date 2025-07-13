@@ -11,7 +11,7 @@ class ModalCrud extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $routeView, public string $routeSubmit, public string $idButton, public bool $isMerged = true)
+    public function __construct(public string $routeView, public string $routeSubmit, public string $idButton, public bool $isMerged = true, public ?string $extraParams = null)
     {
         //
     }

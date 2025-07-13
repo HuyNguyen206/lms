@@ -15,7 +15,7 @@
             <a class="common_btn" href="#">Short Chapter</a>
         </div>
         <div class="accordion" id="accordionExample">
-            @forelse($chapters as $chapter)
+            @forelse($course->chapters as $chapter)
                 <x-modal-popup idButton="showModalCreateLesson_{{$chapter->id}}" style="max-width: 800px"></x-modal-popup>
                 <div class="accordion-item">
                     <h2 class="accordion-header">
@@ -54,90 +54,32 @@
                          data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <ul class="item_list">
-                                <li>
-                                    <span>Aut autem dolorem debitis mollitia.</span>
-                                    <div class="add_course_content_action_btn">
-                                        <a class="edit" href="#"><i class="far fa-edit" aria-hidden="true"></i></a>
-                                        <a class="del" href="#"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>
-                                        <a class="arrow" href="#"><i class="fas fa-arrows-alt"
-                                                                     aria-hidden="true"></i></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Aut autem dolorem debitis mollitia.</span>
-                                    <div class="add_course_content_action_btn">
-                                        <a class="edit" href="#"><i class="far fa-edit" aria-hidden="true"></i></a>
-                                        <a class="del" href="#"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>
-                                        <a class="arrow" href="#"><i class="fas fa-arrows-alt"
-                                                                     aria-hidden="true"></i></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Aut autem dolorem debitis mollitia.</span>
-                                    <div class="add_course_content_action_btn">
-                                        <a class="edit" href="#"><i class="far fa-edit" aria-hidden="true"></i></a>
-                                        <a class="del" href="#"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>
-                                        <a class="arrow" href="#"><i class="fas fa-arrows-alt"
-                                                                     aria-hidden="true"></i></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Aut autem dolorem debitis mollitia.</span>
-                                    <div class="add_course_content_action_btn">
-                                        <a class="edit" href="#"><i class="far fa-edit" aria-hidden="true"></i></a>
-                                        <a class="del" href="#"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>
-                                        <a class="arrow" href="#"><i class="fas fa-arrows-alt"
-                                                                     aria-hidden="true"></i></a>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Aut autem dolorem debitis mollitia.</span>
-                                    <div class="add_course_content_action_btn">
-                                        <a class="edit" href="#"><i class="far fa-edit" aria-hidden="true"></i></a>
-                                        <a class="del" href="#"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>
-                                        <a class="arrow" href="#"><i class="fas fa-arrows-alt"
-                                                                     aria-hidden="true"></i></a>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                aria-expanded="false" aria-controls="flush-collapseOne">
-                                            <span>Accordion Item #1</span>
-                                        </button>
-                                        <div class="add_course_content_action_btn">
-                                            <div class="dropdown">
-                                                <div class="btn btn-secondary dropdown-toggle" type="button"
-                                                     data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="far fa-plus" aria-hidden="true"></i>
-                                                </div>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li>
-                                                    <li><a class="dropdown-item" href="#"> Add Lesson</a>
+                                @foreach($chapter->lessons as $lesson)
+                                    <x-modal-popup idButton="showModalEditLesson_{{$lesson->id}}" style="max-width: 800px"></x-modal-popup>
 
-                                                    </li>
-                                                    <li><a class="dropdown-item" href="#">Add Document</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item" href="#">Add Quiz</a></li>
-                                                </ul>
-                                            </div>
-                                            <a class="edit" href="#"><i class="far fa-edit" aria-hidden="true"></i></a>
-                                            <a class="del" href="#"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>
+                                    <li>
+                                        <span>{{$lesson->title}}</span>
+                                        <div class="add_course_content_action_btn">
+                                            <x-modal-crud
+                                                class="dropdown-item" href="#"
+                                                routeView="{{route('instructor.view-modal', \App\Http\Controllers\Frontend\InstructorController::LESSON_EDIT)}}"
+                                                routeSubmit="{{route('instructor.chapters.lessons.update', [$chapter->id, $lesson->id])}}"
+                                                extraParams="{!! http_build_query(['chapter' => $chapter->id, 'lesson' => $lesson->id]) !!}"
+                                                idButton="showModalEditLesson_{{$lesson->id}}"
+                                                :isMerged="false">
+                                                <i class="far fa-edit" aria-hidden="true"></i>
+                                            </x-modal-crud>
+                                            <form action="{{route('instructor.chapters.lessons.destroy', [$chapter, $lesson])}}" method="post" id="deleteLesson">
+                                                @method('delete')
+                                                @csrf
+                                            </form>
+                                            <a class="del" href="#" onclick="event.preventDefault(); if(confirm('Are you sure to delete?')) {document.getElementById('deleteLesson').submit()}"><i class="fas fa-trash-alt" aria-hidden="true"></i></a>
+                                            <a class="arrow" href="#"><i class="fas fa-arrows-alt"
+                                                                         aria-hidden="true"></i></a>
                                         </div>
-                                    </h2>
-                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                         data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">Placeholder content for
-                                            this accordion, which is intended to demonstrate
-                                            the <code>.accordion-flush</code> class. This is
-                                            the first item's accordion body.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>
